@@ -1,7 +1,7 @@
 const express = require("express");
-
 const app = express();
 const PORT = 8000;
+const db = require("./models/index");
 
 app.get("/todo", (req, res) => {
   res.send("GET /todo");
@@ -21,6 +21,8 @@ app.delete("/todo/:todoId", (req, res) => {
   res.send(`DELETE /todo/${todoId}`);
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+db.sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+  });
 });
