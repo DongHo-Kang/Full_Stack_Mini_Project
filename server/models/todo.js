@@ -8,7 +8,7 @@ const todo = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false, //Not Null
         primaryKey: true,
-        autoInCrement: true,
+        autoIncrement: true,
       },
       title: {
         type: DataTypes.STRING(100),
@@ -17,6 +17,7 @@ const todo = (sequelize) => {
       done: {
         type: DataTypes.TINYINT(1),
         allowNull: false,
+        defaultValue: 0,
       },
     },
     {
