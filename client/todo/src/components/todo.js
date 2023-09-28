@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./todo.css";
 
 //axios get으로 데이터 가져오기
 const TodoData = async () => {
@@ -159,7 +160,11 @@ export default function Todo() {
                 }}
               />
             ) : (
-              <label key={idx} onClick={() => handleEdit(value.id)}>
+              <label
+                key={idx}
+                onClick={() => handleEdit(value.id)}
+                className={value.done === 1 ? "completed" : ""}
+              >
                 {value.title}
               </label>
             )}
