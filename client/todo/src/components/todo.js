@@ -32,7 +32,7 @@ const addTodoFunc = async (todo) => {
   }
 };
 
-const UpdateFunc = async (value, update) => {
+const UpdateFunc = async (value, update, done) => {
   console.log("index", value);
   const id = value;
   console.log("id", id);
@@ -40,6 +40,7 @@ const UpdateFunc = async (value, update) => {
     const Update = await axios.patch(`http://localhost:8000/todo/:${id}`, {
       id: id,
       todo: update,
+      done: done,
     });
     console.log("수정사항 보내기 성공");
     return Update;
@@ -97,7 +98,7 @@ export default function Todo() {
   const handleUpdate = (value) => {
     console.log("update id:", value);
     console.log("update date:", update);
-    UpdateFunc(value, update).then(() => {
+    UpdateFunc(value.id, update, value.done).then(() => {
       setDataChange(!dataChange);
       const updateList = [...list];
       updateList[value] = update;
@@ -111,6 +112,15 @@ export default function Todo() {
       const todoList = [...list];
       todoList.splice(value, 1);
       setList(todoList);
+      setDataChange(!dataChange);
+    });
+  };
+
+  const handleCheckbox = (value) => {
+    console.log("check", value);
+    const newDoneValue = value.done === 1 ? 0 : 1;
+    console.log(newDoneValue);
+    UpdateFunc(value.id, value.title, newDoneValue).then(() => {
       setDataChange(!dataChange);
     });
   };
@@ -131,7 +141,12 @@ export default function Todo() {
       {list.map((value, idx) => {
         return (
           <div key={idx}>
-            <input type="checkBox" />
+            <input
+              type="checkbox"
+              checked={value.done === 1}
+              onChange={() => handleCheckbox(value)}
+            />
+
             {edit === value.id ? (
               <input
                 type="text"
@@ -139,7 +154,7 @@ export default function Todo() {
                 onChange={(e) => setUpdate(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
-                    handleUpdate(value.id);
+                    handleUpdate(value);
                   }
                 }}
               />
