@@ -3,9 +3,11 @@ const app = express();
 const PORT = 8000;
 const db = require("./models/index");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors());
 
 const router = require("./router/index");
 app.use("/", router);
